@@ -1,0 +1,123 @@
+{
+  "_version": "1.80.0",
+  "sap.app": {
+    "id": "com.bgl.app.cashreceipt",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.20.4",
+      "toolsId": "e535e73c-bb1d-4971-9dde-8f2142a92561"
+    },
+    "dataSources": {
+      "ZSB_PAYMENT_RECEIPT_VAN": {
+        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZSB_PAYMENT_RECEIPT_VAN',Version='0001')/$value/",
+        "type": "ODataAnnotation",
+        "settings": {
+          "localUri": "localService/mainService/ZSB_PAYMENT_RECEIPT_VAN.xml"
+        }
+      },
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZSB_PAYMENT_RECEIPT/",
+        "type": "OData",
+        "settings": {
+          "annotations": [
+            "ZSB_PAYMENT_RECEIPT_VAN"
+          ],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.142.7",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.bgl.app.cashreceipt.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "com.bgl.app.cashreceipt.view",
+        "async": true,
+        "viewPath": "com.bgl.app.cashreceipt.view"
+      },
+      "routes": [
+        {
+          "name": "RouteCashReceipt",
+          "pattern": ":?query:",
+          "target": [
+            "TargetCashReceipt"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetCashReceipt": {
+          "id": "CashReceipt",
+          "name": "CashReceipt"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.bgl.app.cashreceipt.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

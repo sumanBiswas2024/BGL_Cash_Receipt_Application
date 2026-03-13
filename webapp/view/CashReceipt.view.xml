@@ -1,0 +1,161 @@
+<!-- <mvc:View controllerName="com.bgl.app.cashreceipt.controller.CashReceipt"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+    </Page>
+</mvc:View> -->
+
+<mvc:View
+    controllerName="com.bgl.app.cashreceipt.controller.CashReceipt"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:svm="sap.ui.comp.smartvariants"
+>
+    <f:DynamicPage
+        id="pageId"
+        headerExpanded="{/headerExpanded}"
+    >
+        <!-- ═══════════════════════════════════════════════════
+             TITLE  –  SmartVariantManagement
+        ════════════════════════════════════════════════════ -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <svm:SmartVariantManagement
+                        id="svm"
+                        showExecuteOnSelection="true"
+                    />
+                </f:heading>
+                <f:expandedContent>
+                    <Text id="expandedLabel" text="No filters active" />
+                </f:expandedContent>
+                <f:snappedContent>
+                    <Text id="snappedLabel" text="No filters active" />
+                </f:snappedContent>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <!-- ═══════════════════════════════════════════════════
+             HEADER  –  FilterBar with 3 input fields
+        ════════════════════════════════════════════════════ -->
+        <f:header>
+            <f:DynamicPageHeader>
+                <f:content>
+                    <fb:FilterBar
+                        id="filterbar"
+                        persistencyKey="bglCashReceiptPersKey"
+                        useToolbar="false"
+                        search=".onSearch"
+                        filterChange=".onFilterChange"
+                        afterVariantLoad=".onAfterVariantLoad"
+                    >
+                        <fb:filterGroupItems>
+
+                            <fb:FilterGroupItem
+                                name="companyCode"
+                                label="Company Code"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <fb:control>
+                                    <Input
+                                        id="idComCode"
+                                        required="true"
+                                        value="1000"
+                                        editable="false"
+                                    />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            
+                            <fb:FilterGroupItem
+                                name="documentNo"
+                                label="Document No"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                                mandatory="true"
+                            >
+                                <fb:control>
+                                    <Input
+                                        id="idDocumentNoInput"
+                                        placeholder="Enter Document No"
+                                        showClearIcon="true"
+                                        maxLength="20"
+                                        liveChange=".onDocumentNoClear"
+                                        enabled="true"
+                                    />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <fb:FilterGroupItem
+                                name="postingDate"
+                                label="Fiscal Year"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                                mandatory="true"
+                            >
+                                <fb:control>
+                                    <DateRangeSelection
+                                        id="idPostingDateRange"
+                                        placeholder="Select Year"
+                                        displayFormat="yyyy"
+                                        valueFormat="yyyy"
+                                        delimiter=" – "
+                                        change=".onPostingDateChange"
+                                    />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <!-- ═══════════════════════════════════════════════════
+             CONTENT  –  PDF Preview iframe
+        ════════════════════════════════════════════════════ -->
+        <f:content>
+            <VBox
+                fitContainer="true"
+                class="pdfPreviewBox"
+                height="100%"
+            >
+                <ScrollContainer
+                    vertical="true"
+                    horizontal="false"
+                    height="100%"
+                >
+                    <core:HTML
+                        id="pdfIframeContainer"
+                        content=""
+                        class="pdf-container"
+                    />
+                </ScrollContainer>
+            </VBox>
+        </f:content>
+
+    </f:DynamicPage>
+
+    <!-- ═══════════════════════════════════════════════════
+         FLOATING ACTION BUTTONS  (Open PDF / Close)
+    ════════════════════════════════════════════════════ -->
+    <VBox class="floating-btn-container">
+        <Button
+            icon="sap-icon://download"
+            type="Emphasized"
+            tooltip="Open / Print PDF"
+            press=".onDownloadPdf"
+        />
+        <Button
+            icon="sap-icon://decline"
+            type="Reject"
+            tooltip="Close PDF"
+            press=".onClosePdfPreview"
+        />
+    </VBox>
+
+</mvc:View>

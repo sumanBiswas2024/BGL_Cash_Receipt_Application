@@ -89,7 +89,7 @@
                                 </fb:control>
                             </fb:FilterGroupItem>
 
-                            <fb:FilterGroupItem
+                            <!-- <fb:FilterGroupItem
                                 name="postingDate"
                                 label="Fiscal Year"
                                 groupName="Group1"
@@ -102,8 +102,29 @@
                                         placeholder="Select Year"
                                         displayFormat="yyyy"
                                         valueFormat="yyyy"
-                                        delimiter=" – "
                                         change=".onPostingDateChange"
+                                    />
+                                </fb:control>
+                            </fb:FilterGroupItem> -->
+                              <fb:FilterGroupItem
+                                name="fiscalYear"
+                                label="Fiscal Year"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                                mandatory="true"
+                            >
+                                <fb:control>
+                                    <DatePicker
+                                        id="idFiscalYearDP"
+                                        value="{
+                                            path: '/valueDP11',
+                                            type: 'sap.ui.model.type.Date',
+                                            formatOptions: {
+                                                pattern: 'yyyy'
+                                            }
+                                        }"
+                                        placeholder="e.g. 2025"
+                                        change=".onFiscalYearChange"
                                     />
                                 </fb:control>
                             </fb:FilterGroupItem>

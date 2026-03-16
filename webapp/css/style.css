@@ -86,7 +86,7 @@
     width: 100%;
     border: none;
 }
-.floating-btn-container {
+/* .floating-btn-container {
     position: fixed;
     bottom: 20px;
     right: 80px;
@@ -97,9 +97,32 @@
 }
 
 .floating-btn-container .sapMBtn {
-    /* box-shadow: 0 2px 5px rgba(0,0,0,0.3); */
     box-shadow: 0 0px 0px rgba(0,0,0,0.3);
+} */
+
+/* ═══════════════════════════════════════════════════════════════
+   FLOATING ACTION BUTTONS  –  fixed to right edge of viewport
+   Matches the screenshot: download + decline stacked vertically,
+   right-aligned, overlapping the content area right border.
+═══════════════════════════════════════════════════════════════ */
+.floating-btn-container {
+    position: fixed;
+    right: 0.12rem;          /* flush to right edge */
+    bottom: 1rem;           /* lifted above browser chrome */
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
 }
+ 
+.floating-btn-container .sapMBtn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 100% !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0);
+}
+
 /* In your CSS file */
 .pdf-loading-overlay {
     position: absolute;

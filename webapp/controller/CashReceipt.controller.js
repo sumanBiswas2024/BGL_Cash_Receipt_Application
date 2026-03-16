@@ -597,8 +597,8 @@ sap.ui.define([
                                 [
                                     cell("Received From", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
                                     cell("BP CODE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
-                                    cell("Issuing\nLocation", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
-                                    cell("RECEIPT\nNO", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                    cell("Issuing Location", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                    cell("RECEIPT NO", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
                                     cell("DATE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" })
                                 ],
                                 [

@@ -325,6 +325,7 @@ sap.ui.define([
                             "  Document No : " + sDocNo + "\n" +
                             "  Fiscal Year : " + sFiscalYear
                         );
+                        that._resetPdfArea();
                         return;
                     }
                     that._loadPdfMakeLibrary(aResults);
@@ -630,7 +631,7 @@ sap.ui.define([
                                 [{
                                     text: "RUPEES\n(IN WORDS)", bold: true, fontSize: 8,
                                     alignment: "center", fillColor: "#f0f0f0",
-                                    margin: [0, 4, 0, 2], border: [true, false, true, false]
+                                    margin: [0, 4, 0, 2], border: [true, false, true, true]   // Left,Top,Right,Bottom
                                 }],
                                 [{
                                     text: sAmountWords, fontSize: 9, alignment: "center",
@@ -649,10 +650,10 @@ sap.ui.define([
                                 [{
                                     text: "REMARKS", bold: true, fontSize: 8,
                                     alignment: "center", fillColor: "#f0f0f0",
-                                    margin: [0, 4, 0, 2], border: [true, false, true, false]
+                                    margin: [0, 4, 0, 2], border: [true, false, true, true]
                                 }],
                                 [{
-                                    text: sRemarks || " ", fontSize: 9,
+                                    text: sRemarks || " ", fontSize: 9,alignment: "center",
                                     margin: [4, 6, 4, 30], border: [true, false, true, true]
                                 }]
                             ]

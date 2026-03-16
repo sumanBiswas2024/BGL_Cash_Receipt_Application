@@ -4,7 +4,6 @@
     <Page id="page" title="{i18n>title}">
     </Page>
 </mvc:View> -->
-
 <mvc:View
     controllerName="com.bgl.app.cashreceipt.controller.CashReceipt"
     xmlns:mvc="sap.ui.core.mvc"
@@ -30,10 +29,16 @@
                     />
                 </f:heading>
                 <f:expandedContent>
-                    <Text id="expandedLabel" text="No filters active" />
+                    <Text
+                        id="expandedLabel"
+                        text="No filters active"
+                    />
                 </f:expandedContent>
                 <f:snappedContent>
-                    <Text id="snappedLabel" text="No filters active" />
+                    <Text
+                        id="snappedLabel"
+                        text="No filters active"
+                    />
                 </f:snappedContent>
             </f:DynamicPageTitle>
         </f:title>
@@ -53,7 +58,6 @@
                         afterVariantLoad=".onAfterVariantLoad"
                     >
                         <fb:filterGroupItems>
-
                             <fb:FilterGroupItem
                                 name="companyCode"
                                 label="Company Code"
@@ -65,11 +69,12 @@
                                         id="idComCode"
                                         required="true"
                                         value="1000"
-                                        editable="false"
+                                        editable="true"
+                                        placeholder="Enter Company Code"
                                     />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            
+
                             <fb:FilterGroupItem
                                 name="documentNo"
                                 label="Document No"
@@ -106,7 +111,7 @@
                                     />
                                 </fb:control>
                             </fb:FilterGroupItem> -->
-                              <fb:FilterGroupItem
+                            <fb:FilterGroupItem
                                 name="fiscalYear"
                                 label="Fiscal Year"
                                 groupName="Group1"
@@ -128,8 +133,6 @@
                                     />
                                 </fb:control>
                             </fb:FilterGroupItem>
-
-
                         </fb:filterGroupItems>
                     </fb:FilterBar>
                 </f:content>
@@ -158,7 +161,6 @@
                 </ScrollContainer>
             </VBox>
         </f:content>
-
     </f:DynamicPage>
 
     <!-- ═══════════════════════════════════════════════════
@@ -178,5 +180,4 @@
             press=".onClosePdfPreview"
         />
     </VBox>
-
 </mvc:View>

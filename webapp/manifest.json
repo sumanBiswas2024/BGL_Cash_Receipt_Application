@@ -34,6 +34,20 @@
           "odataVersion": "2.0"
         }
       }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "zso_cash_receipt-manage": {
+          "semanticObject": "zso_cash_receipt",
+          "action": "manage",
+          "title": "{{zso_cash_receipt-manage.flpTitle}}",
+          "subTitle": "{{zso_cash_receipt-manage.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
     }
   },
   "sap.ui": {

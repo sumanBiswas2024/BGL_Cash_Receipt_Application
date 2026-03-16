@@ -27,14 +27,14 @@ sap.ui.define([
         "SEVENTEEN", "EIGHTEEN", "NINETEEN"
     ];
     var _tens = ["", "", "TWENTY", "THIRTY", "FORTY", "FIFTY",
-                 "SIXTY", "SEVENTY", "EIGHTY", "NINETY"];
+        "SIXTY", "SEVENTY", "EIGHTY", "NINETY"];
 
     function _numToWords(n) {
-        if (n === 0)      { return ""; }
-        if (n < 20)       { return _ones[n]; }
-        if (n < 100)      { return _tens[Math.floor(n / 10)] + (n % 10 ? " " + _ones[n % 10] : ""); }
-        if (n < 1000)     { return _ones[Math.floor(n / 100)] + " HUNDRED" + (n % 100 ? " " + _numToWords(n % 100) : ""); }
-        if (n < 100000)   { return _numToWords(Math.floor(n / 1000)) + " THOUSAND" + (n % 1000 ? " " + _numToWords(n % 1000) : ""); }
+        if (n === 0) { return ""; }
+        if (n < 20) { return _ones[n]; }
+        if (n < 100) { return _tens[Math.floor(n / 10)] + (n % 10 ? " " + _ones[n % 10] : ""); }
+        if (n < 1000) { return _ones[Math.floor(n / 100)] + " HUNDRED" + (n % 100 ? " " + _numToWords(n % 100) : ""); }
+        if (n < 100000) { return _numToWords(Math.floor(n / 1000)) + " THOUSAND" + (n % 1000 ? " " + _numToWords(n % 1000) : ""); }
         if (n < 10000000) { return _numToWords(Math.floor(n / 100000)) + " LAKH" + (n % 100000 ? " " + _numToWords(n % 100000) : ""); }
         return _numToWords(Math.floor(n / 10000000)) + " CRORE" + (n % 10000000 ? " " + _numToWords(n % 10000000) : "");
     }
@@ -43,9 +43,9 @@ sap.ui.define([
         if (fAmount === null || fAmount === undefined || fAmount === "") { return ""; }
         var fParsed = parseFloat(fAmount);
         if (isNaN(fParsed)) { return ""; }
-        var parts  = fParsed.toFixed(2).split(".");
+        var parts = fParsed.toFixed(2).split(".");
         var rupees = parseInt(parts[0], 10);
-        var paise  = parseInt(parts[1], 10);
+        var paise = parseInt(parts[1], 10);
         var sWords = rupees > 0 ? _numToWords(rupees) + " RUPEES" : "ZERO RUPEES";
         if (paise > 0) { sWords += " AND " + _numToWords(paise) + " PAISE"; }
         return sWords + " ONLY";
@@ -120,9 +120,9 @@ sap.ui.define([
 
             // ── SmartVariantManagement + FilterBar (same pattern as BarCodeView) ──
             this.oSmartVariantManagement = this.getView().byId("svm");
-            this.oExpandedLabel          = this.getView().byId("expandedLabel");
-            this.oSnappedLabel           = this.getView().byId("snappedLabel");
-            this.oFilterBar              = this.getView().byId("filterbar");
+            this.oExpandedLabel = this.getView().byId("expandedLabel");
+            this.oSnappedLabel = this.getView().byId("snappedLabel");
+            this.oFilterBar = this.getView().byId("filterbar");
 
             this.oFilterBar.registerFetchData(this.fetchData.bind(this));
             this.oFilterBar.registerApplyData(this.applyData.bind(this));
@@ -133,7 +133,7 @@ sap.ui.define([
                 dataSource: "", control: this.oFilterBar
             });
             this.oSmartVariantManagement.addPersonalizableControl(oPersInfo);
-            this.oSmartVariantManagement.initialise(function () {}, this.oFilterBar);
+            this.oSmartVariantManagement.initialise(function () { }, this.oFilterBar);
 
             this._setPdfPlaceholder();
         },
@@ -143,9 +143,9 @@ sap.ui.define([
         // ───────────────────────────────────────────────────────────────────────
         onExit: function () {
             this.oSmartVariantManagement = null;
-            this.oExpandedLabel          = null;
-            this.oSnappedLabel           = null;
-            this.oFilterBar              = null;
+            this.oExpandedLabel = null;
+            this.oSnappedLabel = null;
+            this.oFilterBar = null;
             if (this._pdfBlobUrl) { URL.revokeObjectURL(this._pdfBlobUrl); }
         },
 
@@ -156,8 +156,8 @@ sap.ui.define([
             // Save current filter state into the variant
             var oDP = this.byId("idFiscalYearDP");
             return {
-                documentNo:  this.byId("idDocumentNoInput").getValue(),
-                fiscalYear:  _getFiscalYear(this.getView(), oDP)   // store as "2025" string
+                documentNo: this.byId("idDocumentNoInput").getValue(),
+                fiscalYear: _getFiscalYear(this.getView(), oDP)   // store as "2025" string
             };
         },
 
@@ -179,17 +179,17 @@ sap.ui.define([
 
         getFiltersWithValues: function () {
             var aActive = [];
-            var aItems  = this.oFilterBar ? this.oFilterBar.getFilterGroupItems() : [];
-            if (this.byId("idDocumentNoInput").getValue())              { aActive.push(aItems[1]); }
-            if (_getFiscalYear(this.getView(), this.byId("idFiscalYearDP")))            { aActive.push(aItems[2]); }
+            var aItems = this.oFilterBar ? this.oFilterBar.getFilterGroupItems() : [];
+            if (this.byId("idDocumentNoInput").getValue()) { aActive.push(aItems[1]); }
+            if (_getFiscalYear(this.getView(), this.byId("idFiscalYearDP"))) { aActive.push(aItems[2]); }
             return aActive;
         },
 
         onFilterChange: function () {
             var iCount = this.getFiltersWithValues().length;
-            var sText  = iCount > 0 ? iCount + " filter(s) active" : "No filters active";
+            var sText = iCount > 0 ? iCount + " filter(s) active" : "No filters active";
             if (this.oExpandedLabel) { this.oExpandedLabel.setText(sText); }
-            if (this.oSnappedLabel)  { this.oSnappedLabel.setText(sText); }
+            if (this.oSnappedLabel) { this.oSnappedLabel.setText(sText); }
         },
 
         onAfterVariantLoad: function () { this.onFilterChange(); },
@@ -218,7 +218,7 @@ sap.ui.define([
          */
         onFiscalYearChange: function (oEvent) {
             var bValid = oEvent.getParameter("valid");
-            var oDP    = this.byId("idFiscalYearDP");
+            var oDP = this.byId("idFiscalYearDP");
 
             if (bValid && _getFiscalYear(this.getView(), oDP)) {
                 // Clear any previous error
@@ -226,7 +226,7 @@ sap.ui.define([
             } else if (!bValid) {
                 // User typed an invalid value (e.g. letters, wrong format)
                 oDP.setValueState(sap.ui.core.ValueState.Error)
-                   .setValueStateText("Please enter a valid year (e.g. 2025).");
+                    .setValueStateText("Please enter a valid year (e.g. 2025).");
             } else {
                 // Field cleared
                 this._resetPdfArea();
@@ -238,15 +238,15 @@ sap.ui.define([
         // ═══════════════════════════════════════════════════════════════════════
         _validateInputs: function () {
             var oDocInput = this.byId("idDocumentNoInput");
-            var oDP       = this.byId("idFiscalYearDP");
-            var bValid    = true;
+            var oDP = this.byId("idFiscalYearDP");
+            var bValid = true;
             var aMessages = [];
 
             // ── Document No ────────────────────────────────────────────────────
             var sDocNo = (oDocInput.getValue() || "").trim();
             if (!sDocNo) {
                 oDocInput.setValueState(sap.ui.core.ValueState.Error)
-                         .setValueStateText("Document No is required.");
+                    .setValueStateText("Document No is required.");
                 aMessages.push("Document No");
                 bValid = false;
             } else {
@@ -259,7 +259,7 @@ sap.ui.define([
             if (!sFY) {
                 // Nothing selected / empty
                 oDP.setValueState(sap.ui.core.ValueState.Error)
-                   .setValueStateText("Fiscal Year is required.");
+                    .setValueStateText("Fiscal Year is required.");
                 aMessages.push("Fiscal Year");
                 bValid = false;
             } else if (oDP.getValueState() === sap.ui.core.ValueState.Error) {
@@ -297,22 +297,22 @@ sap.ui.define([
         _fetchReceiptData: function () {
             var that = this;
 
-            var sCompanyCode = (this.byId("idComCode").getValue()         || "1000").trim();
-            var sDocNo       = (this.byId("idDocumentNoInput").getValue() || "").trim();
-            var sFiscalYear  = _getFiscalYear(this.getView(), this.byId("idFiscalYearDP")); // "2025"
+            var sCompanyCode = (this.byId("idComCode").getValue() || "1000").trim();
+            var sDocNo = (this.byId("idDocumentNoInput").getValue() || "").trim();
+            var sFiscalYear = _getFiscalYear(this.getView(), this.byId("idFiscalYearDP")); // "2025"
 
             var sPath = "/ZI_PAYMENT_RECEIPT(" +
-                        "p_companycode='" + sCompanyCode + "'," +
-                        "p_documentno='"  + sDocNo       + "'," +
-                        "p_fiscalyear='"  + sFiscalYear  + "'" +
-                        ")/Set";
+                "p_companycode='" + sCompanyCode + "'," +
+                "p_documentno='" + sDocNo + "'," +
+                "p_fiscalyear='" + sFiscalYear + "'" +
+                ")/Set";
 
             console.log("OData path:", sPath);
             sap.ui.core.BusyIndicator.show(0);
 
             this.getOwnerComponent().getModel().read(sPath, {
                 success: function (oData) {
-                    sap.ui.core.BusyIndicator.hide();
+                    
                     var aResults = oData.results || [];
                     console.log("Receipt data:", aResults);
 
@@ -325,6 +325,8 @@ sap.ui.define([
                         return;
                     }
                     that._loadPdfMakeLibrary(aResults);
+                    
+                    sap.ui.core.BusyIndicator.hide();
                 },
                 error: function (oErr) {
                     sap.ui.core.BusyIndicator.hide();
@@ -338,15 +340,15 @@ sap.ui.define([
         _handleODataError: function (oErr, sDocNo, sFiscalYear) {
             var sMsg = "Failed to fetch receipt data.";
             try {
-                var oBody   = JSON.parse(oErr.responseText);
+                var oBody = JSON.parse(oErr.responseText);
                 var sDetail = (oBody.error && oBody.error.message && oBody.error.message.value)
-                              ? oBody.error.message.value : "";
+                    ? oBody.error.message.value : "";
 
                 if (oErr.statusCode === 404 ||
                     (sDetail && sDetail.toLowerCase().indexOf("not found") > -1)) {
                     sMsg = "No receipt found for Document No \"" + sDocNo +
-                           "\" in Fiscal Year " + sFiscalYear +
-                           ".\nPlease verify the inputs.";
+                        "\" in Fiscal Year " + sFiscalYear +
+                        ".\nPlease verify the inputs.";
                 } else if (oErr.statusCode === 401 || oErr.statusCode === 403) {
                     sMsg = "You do not have authorization to view this receipt.";
                 } else if (sDetail) {
@@ -364,14 +366,16 @@ sap.ui.define([
         //  LOAD pdfMake LIBS (sequential, same pattern as BarCodeView)
         // ═══════════════════════════════════════════════════════════════════════
         _loadPdfMakeLibrary: function (aResults) {
-            var that  = this;
+            var that = this;
             var sBase = jQuery.sap.getModulePath("com.bgl.app.cashreceipt");
             sap.ui.core.BusyIndicator.show(0);
 
             jQuery.sap.includeScript(sBase + "/libs/pdfmake/pdfmake.min.js", "pdfMakeScript",
                 function () {
+                    console.log(" pdfMake loaded successfully.");
                     jQuery.sap.includeScript(sBase + "/libs/pdfmake/vfs_fonts.js", "vfsFontsScript",
                         function () {
+                            console.log("vfs_fonts loaded successfully.");
                             sap.ui.core.BusyIndicator.hide();
                             if (typeof pdfMake === "undefined") {
                                 MessageBox.error("pdfMake library not loaded.\nEnsure pdfmake.min.js and vfs_fonts.js are in /webapp/libs/pdfmake/.");
@@ -428,8 +432,8 @@ sap.ui.define([
             }
             if (!oDate || isNaN(oDate.getTime())) { return String(vDate); }
             return String(oDate.getDate()).padStart(2, "0") + "/" +
-                   String(oDate.getMonth() + 1).padStart(2, "0") + "/" +
-                   oDate.getFullYear();
+                String(oDate.getMonth() + 1).padStart(2, "0") + "/" +
+                oDate.getFullYear();
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -456,22 +460,22 @@ sap.ui.define([
             this._busyDialog.open();
 
             try {
-                var fLine  = function () { return 1; };
+                var fLine = function () { return 1; };
                 var sBlack = "#000000";
 
                 function cell(sText, oOpts) {
                     oOpts = oOpts || {};
                     return {
-                        text:      (sText !== null && sText !== undefined) ? String(sText) : "",
-                        fontSize:  oOpts.fontSize  || 9,
-                        bold:      oOpts.bold       || false,
-                        alignment: oOpts.alignment  || "left",
-                        fillColor: oOpts.fillColor  || null,
-                        color:     oOpts.color      || sBlack,
-                        colSpan:   oOpts.colSpan    || 1,
-                        border:    oOpts.border     || [true, true, true, true],
-                        margin:    oOpts.margin     || [4, 4, 4, 4],
-                        italics:   oOpts.italics    || false
+                        text: (sText !== null && sText !== undefined) ? String(sText) : "",
+                        fontSize: oOpts.fontSize || 9,
+                        bold: oOpts.bold || false,
+                        alignment: oOpts.alignment || "left",
+                        fillColor: oOpts.fillColor || null,
+                        color: oOpts.color || sBlack,
+                        colSpan: oOpts.colSpan || 1,
+                        border: oOpts.border || [true, true, true, true],
+                        margin: oOpts.margin || [4, 4, 4, 4],
+                        italics: oOpts.italics || false
                     };
                 }
 
@@ -480,22 +484,22 @@ sap.ui.define([
                 aResults.forEach(function (oRow, iIdx) {
 
                     // ── Map OData fields to PDF labels ─────────────────────────
-                    var sCustName    = oRow.customerName       || "";
-                    var sBPCode      = oRow.BPCode             || "";
-                    var sIssuingLoc  = oRow.ProfitCenterName   || oRow.CompanyCode || "";
-                    var sReceiptNo   = oRow.AccountingDocument || "";
+                    var sCustName = oRow.customerName || "-";
+                    var sBPCode = oRow.BPCode || "-";
+                    var sIssuingLoc = oRow.ProfitCenterName || "-";
+                    var sReceiptNo = oRow.AccountingDocument || "-";
                     var sPostingDate = that._formatDate(oRow.PostingDate);
-                    var sReference   = oRow.Reference          || "";
+                    var sReference = oRow.Reference || "-";
                     // ValueDate can be null in backend → fall back to PostingDate
-                    var sValueDate   = oRow.ValueDate
-                                        ? that._formatDate(oRow.ValueDate)
-                                        : sPostingDate;
-                    var fAmount      = parseFloat(oRow.Amount  || "0");
-                    var sAmountFmt   = fAmount.toLocaleString("en-IN", {
+                    var sValueDate = oRow.ValueDate
+                        ? that._formatDate(oRow.ValueDate)
+                        : "-";
+                    var fAmount = parseFloat(oRow.Amount || "0");
+                    var sAmountFmt = fAmount.toLocaleString("en-IN", {
                         minimumFractionDigits: 2, maximumFractionDigits: 2
                     });
                     var sAmountWords = _amountToWords(fAmount);
-                    var sRemarks     = oRow.Remarks            || "";
+                    var sRemarks = oRow.Remarks || "-";
 
                     if (iIdx > 0) { aContent.push({ text: "", pageBreak: "before" }); }
 
@@ -503,42 +507,62 @@ sap.ui.define([
                     var aLogoRow;
                     if (sBase64Logo) {
                         aLogoRow = [
-                            { image: sBase64Logo, width: 55, height: 55,
-                              alignment: "center", margin: [6, 4, 6, 4],
-                              border: [true, true, false, true] },
-                            { stack: [
-                                { text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
-                                  alignment: "center", color: "#1a3c6e", margin: [0, 8, 0, 2] },
-                                { text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
-                                  alignment: "center", color: "#444444", margin: [0, 0, 0, 8] }
-                              ], border: [false, true, true, true], margin: [0, 0, 0, 0] }
+                            {
+                                image: sBase64Logo, width: 55, height: 55,
+                                alignment: "center", margin: [6, 4, 6, 4],
+                                border: [true, true, false, true]
+                            },
+                            {
+                                stack: [
+                                    {
+                                        text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
+                                        alignment: "center", color: "#1a3c6e", margin: [0, 8, 0, 2]
+                                    },
+                                    {
+                                        text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
+                                        alignment: "center", color: "#444444", margin: [0, 0, 0, 8]
+                                    }
+                                ], border: [false, true, true, true], margin: [0, 0, 0, 0]
+                            }
                         ];
                     } else {
                         aLogoRow = [
-                            { stack: [
-                                { text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
-                                  alignment: "center", color: "#1a3c6e", margin: [0, 10, 0, 2] },
-                                { text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
-                                  alignment: "center", color: "#444444", margin: [0, 0, 0, 8] }
-                              ], colSpan: 2, border: [true, true, true, true], margin: [0, 0, 0, 0] },
+                            {
+                                stack: [
+                                    {
+                                        text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
+                                        alignment: "center", color: "#1a3c6e", margin: [0, 10, 0, 2]
+                                    },
+                                    {
+                                        text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
+                                        alignment: "center", color: "#444444", margin: [0, 0, 0, 8]
+                                    }
+                                ], colSpan: 2, border: [true, true, true, true], margin: [0, 0, 0, 0]
+                            },
                             {}
                         ];
                     }
                     aContent.push({
                         table: { widths: [65, "*"], body: [aLogoRow] },
-                        layout: { hLineWidth: fLine, vLineWidth: fLine,
-                                  hLineColor: function () { return sBlack; },
-                                  vLineColor: function () { return sBlack; } },
+                        layout: {
+                            hLineWidth: fLine, vLineWidth: fLine,
+                            hLineColor: function () { return sBlack; },
+                            vLineColor: function () { return sBlack; }
+                        },
                         margin: [0, 0, 0, 0]
                     });
 
                     // ── BLOCK 2 : CASH RECEIPT title ──────────────────────────
                     aContent.push({
-                        table: { widths: ["*"], body: [[
-                            { text: "CASH RECEIPT", fontSize: 13, bold: true,
-                              alignment: "center", margin: [0, 6, 0, 6],
-                              border: [true, false, true, true] }
-                        ]]},
+                        table: {
+                            widths: ["*"], body: [[
+                                {
+                                    text: "CASH RECEIPT", fontSize: 13, bold: true,
+                                    alignment: "center", margin: [0, 6, 0, 6],
+                                    border: [true, false, true, true]
+                                }
+                            ]]
+                        },
                         layout: { hLineWidth: fLine, vLineWidth: fLine },
                         margin: [0, 0, 0, 0]
                     });
@@ -546,20 +570,20 @@ sap.ui.define([
                     // ── BLOCK 3 : Received From / BP Code / Issuing Loc / Receipt No / Date ──
                     aContent.push({
                         table: {
-                            widths: ["28%", "16%", "18%", "20%", "18%"],
+                            widths: ["26%", "16%", "22%", "20%", "16%"],
                             body: [
                                 [
-                                    cell("Received From",     { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
-                                    cell("BP CODE",           { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                    cell("Received From", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                    cell("BP CODE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
                                     cell("Issuing\nLocation", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
-                                    cell("RECEIPT\nNO",       { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
-                                    cell("DATE",              { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" })
+                                    cell("RECEIPT\nNO", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                    cell("DATE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" })
                                 ],
                                 [
-                                    cell(sCustName,    { fontSize: 9, alignment: "center" }),
-                                    cell(sBPCode,      { fontSize: 9, alignment: "center" }),
-                                    cell(sIssuingLoc,  { fontSize: 8, alignment: "center" }),
-                                    cell(sReceiptNo,   { fontSize: 9, alignment: "center", bold: true }),
+                                    cell(sCustName, { fontSize: 9, alignment: "center" }),
+                                    cell(sBPCode, { fontSize: 9, alignment: "center" }),
+                                    cell(sIssuingLoc, { fontSize: 9, alignment: "center" }),
+                                    cell(sReceiptNo, { fontSize: 9, alignment: "center", bold: true }),
                                     cell(sPostingDate, { fontSize: 9, alignment: "center" })
                                 ]
                             ]
@@ -571,17 +595,17 @@ sap.ui.define([
                     // ── BLOCK 4 : Transaction / CHQ No | Reference | Date | Amount ──
                     aContent.push({
                         table: {
-                            widths: ["28%", "28%", "22%", "22%"],
+                            widths: ["34%", "33%", "33%"],
                             body: [
                                 [
                                     cell("Transaction/\nCHQ NO", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
-                                    cell("Reference",             { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
-                                    cell("DATE",                  { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
-                                    { text: "₹ AMOUNT", bold: true, fontSize: 8, alignment: "center",
-                                      fillColor: "#f0f0f0", border: [true, true, true, true], margin: [4, 4, 4, 4] }
+                                    cell("DATE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                    {
+                                        text: "₹ AMOUNT", bold: true, fontSize: 8, alignment: "center",
+                                        fillColor: "#f0f0f0", border: [true, true, true, true], margin: [4, 4, 4, 4]
+                                    }
                                 ],
                                 [
-                                    cell(sReceiptNo, { fontSize: 9, alignment: "center" }),
                                     cell(sReference, { fontSize: 9, alignment: "center" }),
                                     cell(sValueDate, { fontSize: 9, alignment: "center" }),
                                     cell(sAmountFmt, { fontSize: 9, alignment: "right", bold: true })
@@ -594,26 +618,38 @@ sap.ui.define([
 
                     // ── BLOCK 5 : Rupees in Words ──────────────────────────────
                     aContent.push({
-                        table: { widths: ["*"], body: [
-                            [{ text: "RUPEES\n(IN WORDS)", bold: true, fontSize: 8,
-                               alignment: "center", fillColor: "#f0f0f0",
-                               margin: [0, 4, 0, 2], border: [true, false, true, false] }],
-                            [{ text: sAmountWords, fontSize: 9, alignment: "center",
-                               margin: [4, 5, 4, 5], border: [true, false, true, true] }]
-                        ]},
+                        table: {
+                            widths: ["*"], body: [
+                                [{
+                                    text: "RUPEES\n(IN WORDS)", bold: true, fontSize: 8,
+                                    alignment: "center", fillColor: "#f0f0f0",
+                                    margin: [0, 4, 0, 2], border: [true, false, true, false]
+                                }],
+                                [{
+                                    text: sAmountWords, fontSize: 9, alignment: "center",
+                                    margin: [4, 5, 4, 5], border: [true, false, true, true]
+                                }]
+                            ]
+                        },
                         layout: { hLineWidth: fLine, vLineWidth: fLine },
                         margin: [0, 0, 0, 0]
                     });
 
                     // ── BLOCK 6 : Remarks ──────────────────────────────────────
                     aContent.push({
-                        table: { widths: ["*"], body: [
-                            [{ text: "REMARKS", bold: true, fontSize: 8,
-                               alignment: "center", fillColor: "#f0f0f0",
-                               margin: [0, 4, 0, 2], border: [true, false, true, false] }],
-                            [{ text: sRemarks || " ", fontSize: 9,
-                               margin: [4, 6, 4, 30], border: [true, false, true, true] }]
-                        ]},
+                        table: {
+                            widths: ["*"], body: [
+                                [{
+                                    text: "REMARKS", bold: true, fontSize: 8,
+                                    alignment: "center", fillColor: "#f0f0f0",
+                                    margin: [0, 4, 0, 2], border: [true, false, true, false]
+                                }],
+                                [{
+                                    text: sRemarks || " ", fontSize: 9,
+                                    margin: [4, 6, 4, 30], border: [true, false, true, true]
+                                }]
+                            ]
+                        },
                         layout: { hLineWidth: fLine, vLineWidth: fLine },
                         margin: [0, 0, 0, 0]
                     });
@@ -638,9 +674,9 @@ sap.ui.define([
 
                     that.byId("pdfIframeContainer").setContent(
                         '<div style="width:100%;height:calc(100vh - 100px);">' +
-                            '<iframe src="' + sBlobUrl + '" ' +
-                                'style="width:100%;height:100%;border:none;" frameborder="0">' +
-                            '</iframe>' +
+                        '<iframe src="' + sBlobUrl + '" ' +
+                        'style="width:100%;height:100%;border:none;" frameborder="0">' +
+                        '</iframe>' +
                         '</div>'
                     );
                     that._busyDialog.close();

@@ -284,6 +284,8 @@ sap.ui.define([
         // ═══════════════════════════════════════════════════════════════════════
         onSearch: function () {
             if (!this._validateInputs()) { return; }
+
+            this._busyDialog.open();
             this._fetchReceiptData();
         },
 
@@ -308,15 +310,16 @@ sap.ui.define([
                 ")/Set";
 
             console.log("OData path:", sPath);
-            sap.ui.core.BusyIndicator.show(0);
+            // sap.ui.core.BusyIndicator.show(0);
 
             this.getOwnerComponent().getModel().read(sPath, {
                 success: function (oData) {
-                    
+
                     var aResults = oData.results || [];
                     console.log("Receipt data:", aResults);
 
                     if (!aResults.length) {
+                        that._busyDialog.close();
                         MessageBox.warning(
                             "No receipt found for:\n" +
                             "  Document No : " + sDocNo + "\n" +
@@ -325,11 +328,12 @@ sap.ui.define([
                         return;
                     }
                     that._loadPdfMakeLibrary(aResults);
-                    
-                    sap.ui.core.BusyIndicator.hide();
+
+                    // sap.ui.core.BusyIndicator.hide();
                 },
                 error: function (oErr) {
-                    sap.ui.core.BusyIndicator.hide();
+                    // sap.ui.core.BusyIndicator.hide();
+                    that._busyDialog.close();
                     console.error("OData error:", oErr);
                     that._handleODataError(oErr, sDocNo, sFiscalYear);
                 }
@@ -368,7 +372,7 @@ sap.ui.define([
         _loadPdfMakeLibrary: function (aResults) {
             var that = this;
             var sBase = jQuery.sap.getModulePath("com.bgl.app.cashreceipt");
-            sap.ui.core.BusyIndicator.show(0);
+            // sap.ui.core.BusyIndicator.show(0);
 
             jQuery.sap.includeScript(sBase + "/libs/pdfmake/pdfmake.min.js", "pdfMakeScript",
                 function () {
@@ -376,8 +380,9 @@ sap.ui.define([
                     jQuery.sap.includeScript(sBase + "/libs/pdfmake/vfs_fonts.js", "vfsFontsScript",
                         function () {
                             console.log("vfs_fonts loaded successfully.");
-                            sap.ui.core.BusyIndicator.hide();
+                            // sap.ui.core.BusyIndicator.hide();
                             if (typeof pdfMake === "undefined") {
+                                that._busyDialog.close();
                                 MessageBox.error("pdfMake library not loaded.\nEnsure pdfmake.min.js and vfs_fonts.js are in /webapp/libs/pdfmake/.");
                                 return;
                             }
@@ -386,13 +391,15 @@ sap.ui.define([
                             });
                         },
                         function () {
-                            sap.ui.core.BusyIndicator.hide();
+                            // sap.ui.core.BusyIndicator.hide();
+                            that._busyDialog.close();
                             MessageBox.error("Failed to load vfs_fonts.js. Check /webapp/libs/pdfmake/.");
                         }
                     );
                 },
                 function () {
-                    sap.ui.core.BusyIndicator.hide();
+                    // sap.ui.core.BusyIndicator.hide();
+                    that._busyDialog.close();
                     MessageBox.error("Failed to load pdfmake.min.js. Check /webapp/libs/pdfmake/.");
                 }
             );
@@ -583,7 +590,7 @@ sap.ui.define([
                                     cell(sCustName, { fontSize: 9, alignment: "center" }),
                                     cell(sBPCode, { fontSize: 9, alignment: "center" }),
                                     cell(sIssuingLoc, { fontSize: 9, alignment: "center" }),
-                                    cell(sReceiptNo, { fontSize: 9, alignment: "center", bold: true }),
+                                    cell(sReceiptNo, { fontSize: 9, alignment: "center", bold: false }),
                                     cell(sPostingDate, { fontSize: 9, alignment: "center" })
                                 ]
                             ]
@@ -673,11 +680,16 @@ sap.ui.define([
                     that._pdfBlobUrl = sBlobUrl;
 
                     that.byId("pdfIframeContainer").setContent(
-                        '<div style="width:100%;height:calc(100vh - 100px);">' +
-                        '<iframe src="' + sBlobUrl + '" ' +
-                        'style="width:100%;height:100%;border:none;" frameborder="0">' +
-                        '</iframe>' +
-                        '</div>'
+                        // '<div style="width:100%;height:calc(100vh - 100px);">' +
+                        // '<iframe src="' + sBlobUrl + '" ' +
+                        // 'style="width:100%;height:100%;border:none;" frameborder="0">' +
+                        // '</iframe>' +
+                        // '</div>'
+                        `
+                            <div class="pdf-iframe-container">
+                                <iframe src="${sBlobUrl}" class="pdf-iframe"></iframe>
+                            </div>
+                        `
                     );
                     that._busyDialog.close();
                 });

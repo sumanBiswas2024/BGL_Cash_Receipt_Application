@@ -145,7 +145,6 @@
         <f:content>
             <VBox
                 fitContainer="true"
-                class="pdfPreviewBox"
                 height="100%"
             >
                 <ScrollContainer
@@ -156,7 +155,6 @@
                     <core:HTML
                         id="pdfIframeContainer"
                         content=""
-                        class="pdf-container"
                     />
                 </ScrollContainer>
             </VBox>

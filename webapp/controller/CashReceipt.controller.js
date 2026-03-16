@@ -620,7 +620,7 @@ sap.ui.define([
                             widths: ["34%", "33%", "33%"],
                             body: [
                                 [
-                                    cell("Transaction/\nCHQ NO", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                    cell("Transaction/CHQ NO", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
                                     cell("DATE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
                                     {
                                         text: "₹ AMOUNT", bold: true, fontSize: 8, alignment: "center",
@@ -643,7 +643,7 @@ sap.ui.define([
                         table: {
                             widths: ["*"], body: [
                                 [{
-                                    text: "RUPEES\n(IN WORDS)", bold: true, fontSize: 8,
+                                    text: "RUPEES (IN WORDS)", bold: true, fontSize: 8,
                                     alignment: "center", fillColor: "#f0f0f0",
                                     margin: [0, 4, 0, 2], border: [true, false, true, true]   // Left,Top,Right,Bottom
                                 }],

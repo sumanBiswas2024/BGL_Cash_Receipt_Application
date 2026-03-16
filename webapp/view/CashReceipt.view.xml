@@ -69,6 +69,7 @@
                                         id="idComCode"
                                         required="true"
                                         value="1000"
+                                        showClearIcon="true"
                                         editable="true"
                                         placeholder="Enter Company Code"
                                     />

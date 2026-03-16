@@ -237,10 +237,23 @@ sap.ui.define([
         //  VALIDATION
         // ═══════════════════════════════════════════════════════════════════════
         _validateInputs: function () {
+
+            var oCompInput = this.byId("idComCode");
             var oDocInput = this.byId("idDocumentNoInput");
             var oDP = this.byId("idFiscalYearDP");
             var bValid = true;
             var aMessages = [];
+
+            // ── Company Code ────────────────────────────────────────────────────
+            var sCompCode = (oCompInput.getValue() || "").trim();
+            if (!sCompCode) {
+                oCompInput.setValueState(sap.ui.core.ValueState.Error)
+                    .setValueStateText("Company Code is required.");
+                aMessages.push("Company Code");
+                bValid = false;
+            } else {
+                oCompInput.setValueState(sap.ui.core.ValueState.None).setValueStateText("");
+            }
 
             // ── Document No ────────────────────────────────────────────────────
             var sDocNo = (oDocInput.getValue() || "").trim();
@@ -299,7 +312,7 @@ sap.ui.define([
         _fetchReceiptData: function () {
             var that = this;
 
-            var sCompanyCode = (this.byId("idComCode").getValue() || "1000").trim();
+            var sCompanyCode = (this.byId("idComCode").getValue() || "").trim();
             var sDocNo = (this.byId("idDocumentNoInput").getValue() || "").trim();
             var sFiscalYear = _getFiscalYear(this.getView(), this.byId("idFiscalYearDP")); // "2025"
 
@@ -322,6 +335,7 @@ sap.ui.define([
                         that._busyDialog.close();
                         MessageBox.warning(
                             "No receipt found for:\n" +
+                            "  Company Code : " + sCompanyCode + "\n" +
                             "  Document No : " + sDocNo + "\n" +
                             "  Fiscal Year : " + sFiscalYear
                         );

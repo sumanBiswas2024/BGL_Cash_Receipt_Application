@@ -653,7 +653,7 @@ sap.ui.define([
                                     margin: [0, 4, 0, 2], border: [true, false, true, true]
                                 }],
                                 [{
-                                    text: sRemarks || " ", fontSize: 9,alignment: "center",
+                                    text: sRemarks || " ", fontSize: 9, alignment: "center",
                                     margin: [4, 6, 4, 30], border: [true, false, true, true]
                                 }]
                             ]
@@ -701,6 +701,257 @@ sap.ui.define([
                 MessageBox.error("Failed to generate Cash Receipt PDF.\nError: " + oErr.message);
             }
         },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        //  GENERATE BGL CASH RECEIPT PDF FOR MULTIPLE LINE_ITEMS
+        //
+        //  All rows in aResults belong to the SAME document (same parameterized
+        //  fetch). Header blocks (1–3, 6–7) use aResults[0].
+        //  Block 4 renders ONE data row per result item.
+        //  Block 5 (Rupees in Words) shows the SUM of all line item amounts.
+        // ═══════════════════════════════════════════════════════════════════════
+        _generateCashReceiptPdf22222: function (aResults, sBase64Logo) {
+            var that = this;
+
+            try {
+                var fLine = function () { return 1; };
+                var sBlack = "#000000";
+
+                function cell(sText, oOpts) {
+                    oOpts = oOpts || {};
+                    return {
+                        text: (sText !== null && sText !== undefined) ? String(sText) : "",
+                        fontSize: oOpts.fontSize || 9,
+                        bold: oOpts.bold || false,
+                        alignment: oOpts.alignment || "left",
+                        fillColor: oOpts.fillColor || null,
+                        color: oOpts.color || sBlack,
+                        colSpan: oOpts.colSpan || 1,
+                        border: oOpts.border || [true, true, true, true],
+                        margin: oOpts.margin || [4, 4, 4, 4],
+                        italics: oOpts.italics || false
+                    };
+                }
+
+                // ── Header fields come from the first row (same for all rows) ──
+                var oHdr = aResults[0];
+                var sCustName = oHdr.customerName || "-";
+                var sBPCode = oHdr.BPCode || "-";
+                var sIssuingLoc = oHdr.ProfitCenterName || "-";
+                var sReceiptNo = oHdr.AccountingDocument || "-";
+                var sPostingDate = that._formatDate(oHdr.PostingDate);
+                var sRemarks = oHdr.Remarks || "-";
+
+                // ── Sum all line item amounts for Block 5 ──────────────────────
+                var fTotalAmount = 0;
+                aResults.forEach(function (oRow) {
+                    fTotalAmount += parseFloat(oRow.Amount || "0");
+                });
+                var sTotalAmountFmt = fTotalAmount.toLocaleString("en-IN", {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2
+                });
+                var sTotalAmountWords = _amountToWords(fTotalAmount);
+
+                var aContent = [];
+
+                // ── BLOCK 1 : Company Header ───────────────────────────────────
+                var aLogoRow;
+                if (sBase64Logo) {
+                    aLogoRow = [
+                        {
+                            image: sBase64Logo, width: 55, height: 55,
+                            alignment: "center", margin: [6, 4, 6, 4],
+                            border: [true, true, false, true]
+                        },
+                        {
+                            stack: [
+                                {
+                                    text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
+                                    alignment: "center", color: "#1a3c6e", margin: [0, 8, 0, 2]
+                                },
+                                {
+                                    text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
+                                    alignment: "center", color: "#444444", margin: [0, 0, 0, 8]
+                                }
+                            ], border: [false, true, true, true], margin: [0, 0, 0, 0]
+                        }
+                    ];
+                } else {
+                    aLogoRow = [
+                        {
+                            stack: [
+                                {
+                                    text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
+                                    alignment: "center", color: "#1a3c6e", margin: [0, 10, 0, 2]
+                                },
+                                {
+                                    text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
+                                    alignment: "center", color: "#444444", margin: [0, 0, 0, 8]
+                                }
+                            ], colSpan: 2, border: [true, true, true, true], margin: [0, 0, 0, 0]
+                        },
+                        {}
+                    ];
+                }
+                aContent.push({
+                    table: { widths: [65, "*"], body: [aLogoRow] },
+                    layout: {
+                        hLineWidth: fLine, vLineWidth: fLine,
+                        hLineColor: function () { return sBlack; },
+                        vLineColor: function () { return sBlack; }
+                    },
+                    margin: [0, 0, 0, 0]
+                });
+
+                // ── BLOCK 2 : CASH RECEIPT title ──────────────────────────────
+                aContent.push({
+                    table: {
+                        widths: ["*"], body: [[
+                            {
+                                text: "CASH RECEIPT", fontSize: 13, bold: true,
+                                alignment: "center", margin: [0, 6, 0, 6],
+                                border: [true, false, true, true]
+                            }
+                        ]]
+                    },
+                    layout: { hLineWidth: fLine, vLineWidth: fLine },
+                    margin: [0, 0, 0, 0]
+                });
+
+                // ── BLOCK 3 : Received From / BP Code / Issuing Loc / Receipt No / Date ──
+                aContent.push({
+                    table: {
+                        widths: ["26%", "16%", "22%", "20%", "16%"],
+                        body: [
+                            [
+                                cell("Received From", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                cell("BP CODE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                cell("Issuing\nLocation", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                cell("RECEIPT\nNO", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                                cell("DATE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" })
+                            ],
+                            [
+                                cell(sCustName, { fontSize: 9, alignment: "center" }),
+                                cell(sBPCode, { fontSize: 9, alignment: "center" }),
+                                cell(sIssuingLoc, { fontSize: 9, alignment: "center" }),
+                                cell(sReceiptNo, { fontSize: 9, alignment: "center" }),
+                                cell(sPostingDate, { fontSize: 9, alignment: "center" })
+                            ]
+                        ]
+                    },
+                    layout: { hLineWidth: fLine, vLineWidth: fLine },
+                    margin: [0, 0, 0, 0]
+                });
+
+                // ── BLOCK 4 : Transaction lines  (one row per result item) ─────
+                // Header row is fixed; data rows loop over all aResults.
+                var aLineRows = [
+                    // Header row
+                    [
+                        cell("Transaction/\nCHQ NO", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                        cell("DATE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
+                        {
+                            text: "₹ AMOUNT", bold: true, fontSize: 8, alignment: "center",
+                            fillColor: "#f0f0f0", border: [true, true, true, true], margin: [4, 4, 4, 4]
+                        }
+                    ]
+                ];
+
+                aResults.forEach(function (oRow) {
+                    var sRef = oRow.Reference || "-";
+                    // ValueDate null → show "-"
+                    var sVD = oRow.ValueDate ? that._formatDate(oRow.ValueDate) : "-";
+                    var fAmt = parseFloat(oRow.Amount || "0");
+                    var sAmt = fAmt.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2, maximumFractionDigits: 2
+                    });
+
+                    aLineRows.push([
+                        cell(sRef, { fontSize: 9, alignment: "center" }),
+                        cell(sVD, { fontSize: 9, alignment: "center" }),
+                        cell(sAmt, { fontSize: 9, alignment: "right", bold: true })
+                    ]);
+                });
+
+                aContent.push({
+                    table: {
+                        widths: ["34%", "33%", "33%"],
+                        body: aLineRows
+                    },
+                    layout: { hLineWidth: fLine, vLineWidth: fLine },
+                    margin: [0, 0, 0, 0]
+                });
+
+                // ── BLOCK 5 : Rupees in Words  (SUM of all line amounts) ───────
+                aContent.push({
+                    table: {
+                        widths: ["*"], body: [
+                            [{
+                                text: "RUPEES\n(IN WORDS)", bold: true, fontSize: 8,
+                                alignment: "center", fillColor: "#f0f0f0",
+                                margin: [0, 4, 0, 2], border: [true, false, true, true]
+                            }],
+                            [{
+                                text: sTotalAmountWords, fontSize: 9, alignment: "center",
+                                margin: [4, 5, 4, 5], border: [true, false, true, true]
+                            }]
+                        ]
+                    },
+                    layout: { hLineWidth: fLine, vLineWidth: fLine },
+                    margin: [0, 0, 0, 0]
+                });
+
+                // ── BLOCK 6 : Remarks ──────────────────────────────────────────
+                aContent.push({
+                    table: {
+                        widths: ["*"], body: [
+                            [{
+                                text: "REMARKS", bold: true, fontSize: 8,
+                                alignment: "center", fillColor: "#f0f0f0",
+                                margin: [0, 4, 0, 2], border: [true, false, true, true]
+                            }],
+                            [{
+                                text: sRemarks, fontSize: 9, alignment: "center",
+                                margin: [4, 6, 4, 30], border: [true, false, true, true]
+                            }]
+                        ]
+                    },
+                    layout: { hLineWidth: fLine, vLineWidth: fLine },
+                    margin: [0, 0, 0, 0]
+                });
+
+                // ── BLOCK 7 : Footer note ──────────────────────────────────────
+                aContent.push({
+                    text: "* This is a system generated receipt no signature is required",
+                    fontSize: 8, italics: true, color: "#555555", margin: [2, 10, 0, 0]
+                });
+
+                // ── Render ─────────────────────────────────────────────────────
+                var oDocDef = {
+                    pageSize: "A4", pageMargins: [30, 30, 30, 30],
+                    content: aContent, defaultStyle: { fontSize: 9 }
+                };
+
+                pdfMake.createPdf(oDocDef).getBlob(function (oBlob) {
+                    if (that._pdfBlobUrl) { URL.revokeObjectURL(that._pdfBlobUrl); }
+                    var sBlobUrl = URL.createObjectURL(oBlob);
+                    that._pdfBlobUrl = sBlobUrl;
+
+                    that.byId("pdfIframeContainer").setContent(
+                        `<div class="pdf-iframe-container">
+                            <iframe src="${sBlobUrl}" class="pdf-iframe"></iframe>
+                        </div>`
+                    );
+                    that._busyDialog.close();
+                });
+
+            } catch (oErr) {
+                console.error("PDF generation failed:", oErr);
+                this._busyDialog.close();
+                MessageBox.error("Failed to generate Cash Receipt PDF.\nError: " + oErr.message);
+            }
+        },
+
 
         // ═══════════════════════════════════════════════════════════════════════
         //  PDF PLACEHOLDER

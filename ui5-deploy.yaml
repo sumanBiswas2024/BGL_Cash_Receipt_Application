@@ -21,6 +21,6 @@ builder:
           name: ZCASH_RECEIPT_R
           description: BGL Cash Receipt
           package: ZFIORI
-          transport: KUNK900906
+          transport: KUNK900917
         exclude:
           - /test/

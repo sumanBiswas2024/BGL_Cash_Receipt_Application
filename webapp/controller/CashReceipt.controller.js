@@ -527,43 +527,81 @@ sap.ui.define([
 
                     // ── BLOCK 1 : Company Header ───────────────────────────────
                     var aLogoRow;
-                    if (sBase64Logo) {
-                        aLogoRow = [
-                            {
-                                image: sBase64Logo, width: 55, height: 55,
-                                alignment: "center", margin: [6, 4, 6, 4],
-                                border: [true, true, false, true]
-                            },
-                            {
-                                stack: [
-                                    {
-                                        text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
-                                        alignment: "center", color: "#1a3c6e", margin: [0, 8, 0, 2]
-                                    },
-                                    {
-                                        text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
-                                        alignment: "center", color: "#444444", margin: [0, 0, 0, 8]
-                                    }
-                                ], border: [false, true, true, true], margin: [0, 0, 0, 0]
-                            }
-                        ];
-                    } else {
-                        aLogoRow = [
-                            {
-                                stack: [
-                                    {
-                                        text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
-                                        alignment: "center", color: "#1a3c6e", margin: [0, 10, 0, 2]
-                                    },
-                                    {
-                                        text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
-                                        alignment: "center", color: "#444444", margin: [0, 0, 0, 8]
-                                    }
-                                ], colSpan: 2, border: [true, true, true, true], margin: [0, 0, 0, 0]
-                            },
-                            {}
-                        ];
-                    }
+                    // if (sBase64Logo) {
+                    //     aLogoRow = [
+                    //         {
+                    //             image: sBase64Logo, width: 55, height: 55,
+                    //             alignment: "center", margin: [6, 4, 6, 4],
+                    //             border: [true, true, false, true]
+                    //         },
+                    //         {
+                    //             stack: [
+                    //                 {
+                    //                     text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
+                    //                     alignment: "center", color: "#1a3c6e", margin: [0, 8, 0, 2]
+                    //                 },
+                    //                 {
+                    //                     text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
+                    //                     alignment: "center", color: "#444444", margin: [0, 0, 0, 8]
+                    //                 }
+                    //             ], border: [false, true, true, true], margin: [0, 0, 0, 0]
+                    //         }
+                    //     ];
+                    // } else {
+                    //     aLogoRow = [
+                    //         {
+                    //             stack: [
+                    //                 {
+                    //                     text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
+                    //                     alignment: "center", color: "#1a3c6e", margin: [0, 10, 0, 2]
+                    //                 },
+                    //                 {
+                    //                     text: "(A Joint venture of GAIL & HPCL)", fontSize: 9,
+                    //                     alignment: "center", color: "#444444", margin: [0, 0, 0, 8]
+                    //                 }
+                    //             ], colSpan: 2, border: [true, true, true, true], margin: [0, 0, 0, 0]
+                    //         },
+                    //         {}
+                    //     ];
+                    // }
+
+                    aLogoRow = [
+                        {
+                            image: sBase64Logo, width: 55, height: 55,
+                            alignment: "center", margin: [6, 12, 6, 12],
+                            border: [true, true, false, true]
+                        },
+                        {
+                            stack: [
+                                {
+                                    text: "Bhagyanagar Gas Limited", bold: true, fontSize: 18,
+                                    alignment: "center", color: "#1a3c6e", margin: [0, 6, 0, 1]
+                                },
+                                {
+                                    text: "(A Joint venture of GAIL & HPCL)", fontSize: 9, bold: true,
+                                    alignment: "center", margin: [0, 0, 0, 3]
+                                },
+                                // {
+                                //     canvas: [{ type: "line", x1: 0, y1: 0, x2: 455, y2: 0, lineWidth: 0.5, lineColor: "#000000" }],
+                                //     margin: [0, 2, 0, 3]
+                                // },
+                                {
+                                    text: "Registered Office : 2nd Floor, Parishram Bhavan, TSIDC Building, Basheer Bagh, Hyderabad - 500 004.",
+                                    fontSize: 9, bold: true, alignment: "center", margin: [0, 0, 0, 1]
+                                },
+                                {
+                                    text: "Telephone : 040 - 23236986",
+                                    fontSize: 9, bold: true, alignment: "center",  margin: [0, 0, 0, 1]
+                                },
+                                {
+                                    text: "Website: www.bglgas.com,     CIN : U40200TG2003PLC041566",
+                                    fontSize: 9, bold: true, alignment: "center",  margin: [0, 0, 0, 4]
+                                }
+                            ],
+                            border: [false, true, true, true], margin: [0, 0, 30, 0]
+                        }
+                    ];
+
                     aContent.push({
                         table: { widths: [65, "*"], body: [aLogoRow] },
                         layout: {

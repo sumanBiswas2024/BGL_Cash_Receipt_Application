@@ -640,11 +640,11 @@ sap.ui.define([
                                     cell("DATE", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" })
                                 ],
                                 [
-                                    cell(sCustName, { fontSize: 9, alignment: "center" }),
-                                    cell(sBPCode, { fontSize: 9, alignment: "center" }),
-                                    cell(sIssuingLoc, { fontSize: 9, alignment: "center" }),
-                                    cell(sReceiptNo, { fontSize: 9, alignment: "center", bold: false }),
-                                    cell(sPostingDate, { fontSize: 9, alignment: "center" })
+                                    cell(sCustName, { fontSize: 9, alignment: "left" }),
+                                    cell(sBPCode, { fontSize: 9, alignment: "left" }),
+                                    cell(sIssuingLoc, { fontSize: 9, alignment: "left" }),
+                                    cell(sReceiptNo, { fontSize: 9, alignment: "left", bold: false }),
+                                    cell(sPostingDate, { fontSize: 9, alignment: "left" })
                                 ]
                             ]
                         },
@@ -655,7 +655,7 @@ sap.ui.define([
                     // ── BLOCK 4 : Transaction / CHQ No | Reference | Date | Amount ──
                     aContent.push({
                         table: {
-                            widths: ["34%", "33%", "33%"],
+                            widths: ["42%", "22%", "36%"],
                             body: [
                                 [
                                     cell("Transaction/CHQ NO", { bold: true, fontSize: 8, alignment: "center", fillColor: "#f0f0f0" }),
@@ -666,9 +666,9 @@ sap.ui.define([
                                     }
                                 ],
                                 [
-                                    cell(sReference, { fontSize: 9, alignment: "center" }),
-                                    cell(sValueDate, { fontSize: 9, alignment: "center" }),
-                                    cell(sAmountFmt, { fontSize: 9, alignment: "right", bold: true })
+                                    cell(sReference, { fontSize: 9, alignment: "left" }),
+                                    cell(sValueDate, { fontSize: 9, alignment: "left" }),
+                                    cell(sAmountFmt, { fontSize: 9, alignment: "left", bold: false })
                                 ]
                             ]
                         },
@@ -686,7 +686,7 @@ sap.ui.define([
                                     margin: [0, 4, 0, 2], border: [true, false, true, true]   // Left,Top,Right,Bottom
                                 }],
                                 [{
-                                    text: sAmountWords, fontSize: 9, alignment: "center",
+                                    text: sAmountWords, fontSize: 9, alignment: "left",
                                     margin: [4, 5, 4, 5], border: [true, false, true, true]
                                 }]
                             ]
@@ -705,7 +705,7 @@ sap.ui.define([
                                     margin: [0, 4, 0, 2], border: [true, false, true, true]
                                 }],
                                 [{
-                                    text: sRemarks || " ", fontSize: 9, alignment: "center",
+                                    text: sRemarks || " ", fontSize: 9, alignment: "left",
                                     margin: [4, 6, 4, 30], border: [true, false, true, true]
                                 }]
                             ]
@@ -1040,7 +1040,7 @@ sap.ui.define([
             var oWin = window.open("", "_blank");
             if (!oWin) { MessageToast.show("Please allow pop-ups to open the PDF."); return; }
             oWin.document.write(
-                "<html><head><title>BGL Cash Receipt</title>" +
+                "<html><head><title>Payment Receipt</title>" +
                 "<style>html,body{margin:0;height:100%;overflow:hidden;}" +
                 "iframe{width:100%;height:100%;border:none;}</style></head>" +
                 "<body><iframe src=\"" + this._pdfBlobUrl + "\" allow=\"fullscreen\"></iframe></body></html>"
